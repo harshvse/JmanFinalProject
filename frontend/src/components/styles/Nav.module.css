@@ -1,0 +1,33 @@
+.navContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2px 2rem;
+  background-color: var(--lightDark);
+  margin: 0;
+}
+.navContainer a {
+  text-decoration: none;
+  color: var(--primary);
+  font-weight: bold;
+  font-family: "Jetbrains Mono";
+}
+
+.log {
+  display: flex;
+  color: var(--primary);
+  align-items: center;
+}
+.log button {
+  margin: 0px 20px;
+  background-color: var(--secondary);
+  border: 2px solid var(--dark);
+  font-family: "Jetbrains Mono";
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 10px;
+}
+
+.greeting {
+  padding-right: 30px;
+}

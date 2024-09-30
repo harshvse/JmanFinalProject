@@ -1,0 +1,12 @@
+.sideBar {
+  height: 100%;
+  width: 10vw;
+  background-color: var(--dark);
+  text-align: center;
+  padding-top: 2rem;
+  color: var(--primary);
+}
+.navLink {
+  text-decoration: none;
+  color: var(--primary);
+}

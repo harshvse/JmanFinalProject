@@ -1,0 +1,202 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL") // Replace with your PostgreSQL connection string
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id            Int       @id @default(autoincrement()) @db.Integer
+  firstName     String    @db.VarChar(255)
+  lastName      String    @db.VarChar(255)
+  email         String    @unique @db.VarChar(255)
+  password      String    @db.VarChar(255)
+  teamId        Int?      @db.Integer
+  departmentId  Int?      @db.Integer
+  createdAt     DateTime  @default(now()) @db.Timestamp
+
+  team          Team?     @relation(fields: [teamId], references: [id])
+  department    Department? @relation(fields: [departmentId], references: [id])
+  discussions   Discussion[]  @relation("CreatedDiscussions")
+  questions     DiscussionQuestion[]
+  answers       DiscussionAnswer[]
+  quizResults   QuizResult[]
+  engagements   Engagement[]
+  feedbacks     Feedback[]
+  roles         UserRoles[]
+  refreshTokens RefreshToken[]
+
+  @@map("users")
+}
+
+model Team {
+  id        Int      @id @default(autoincrement()) @db.Integer
+  name      String   @db.VarChar(255)
+  createdAt DateTime @default(now()) @db.Timestamp
+
+  users     User[]
+
+  @@map("teams")
+}
+
+model Department {
+  id        Int      @id @default(autoincrement()) @db.Integer
+  name      String   @db.VarChar(255)
+  createdAt DateTime @default(now()) @db.Timestamp
+
+  users     User[]
+
+  @@map("departments")
+}
+
+model Course {
+  id          Int       @id @default(autoincrement()) @db.Integer
+  title       String    @db.VarChar(255)
+  description String    @db.Text
+  category    String    @db.VarChar(255)
+  createdAt   DateTime  @default(now()) @db.Timestamp
+
+  content     CourseContent[]
+  discussions Discussion[]
+  feedbacks   Feedback[]
+
+  @@map("courses")
+}
+
+model CourseContent {
+  id           Int       @id @default(autoincrement()) @db.Integer
+  courseId     Int       @db.Integer
+  title        String    @db.VarChar(255)
+  content      String    @db.Text
+  orderInCourse Int      @db.Integer
+  createdAt    DateTime  @default(now()) @db.Timestamp
+
+  course       Course    @relation(fields: [courseId], references: [id])
+  quizzes      Quiz[]
+  engagements  Engagement[]
+
+  @@map("course_content")
+}
+
+model Discussion {
+  id          Int       @id @default(autoincrement()) @db.Integer
+  courseId    Int       @db.Integer
+  createdBy   Int       @db.Integer
+  createdAt   DateTime  @default(now()) @db.Timestamp
+
+  course      Course    @relation(fields: [courseId], references: [id])
+  creator     User      @relation(name: "CreatedDiscussions", fields: [createdBy], references: [id])
+  questions   DiscussionQuestion[]
+
+  @@map("discussions")
+}
+
+model DiscussionQuestion {
+  id            Int       @id @default(autoincrement()) @db.Integer
+  discussionId  Int       @db.Integer
+  userId        Int       @db.Integer
+  questionText  String    @db.Text
+  createdAt     DateTime  @default(now()) @db.Timestamp
+
+  discussion    Discussion @relation(fields: [discussionId], references: [id])
+  user          User       @relation(fields: [userId], references: [id])
+  answers       DiscussionAnswer[]
+
+  @@map("discussion_questions")
+}
+
+model DiscussionAnswer {
+  id          Int       @id @default(autoincrement()) @db.Integer
+  questionId  Int       @db.Integer
+  userId      Int       @db.Integer
+  answerText  String    @db.Text
+  createdAt   DateTime  @default(now()) @db.Timestamp
+
+  question    DiscussionQuestion @relation(fields: [questionId], references: [id])
+  user        User               @relation(fields: [userId], references: [id])
+
+  @@map("discussion_answers")
+}
+
+model Quiz {
+  id          Int       @id @default(autoincrement()) @db.Integer
+  contentId   Int       @db.Integer
+  question    String    @db.Text
+  correctAnswer String  @db.Text
+  createdAt   DateTime  @default(now()) @db.Timestamp
+
+  content     CourseContent @relation(fields: [contentId], references: [id])
+  quizResults QuizResult[]
+
+  @@map("quizzes")
+}
+
+model QuizResult {
+  id          Int       @id @default(autoincrement()) @db.Integer
+  quizId      Int       @db.Integer
+  userId      Int       @db.Integer
+  selectedAnswer String @db.Text
+  isCorrect   Boolean   @db.Boolean
+  createdAt   DateTime  @default(now()) @db.Timestamp
+
+  quiz        Quiz      @relation(fields: [quizId], references: [id])
+  user        User      @relation(fields: [userId], references: [id])
+
+  @@map("quiz_results")
+}
+
+model Engagement {
+  id             Int       @id @default(autoincrement()) @db.Integer
+  userId         Int       @db.Integer
+  courseContentId Int      @db.Integer
+  totalTimeSpent Int       @db.Integer
+  lastAccessed   DateTime  @db.Timestamp
+  createdAt      DateTime  @default(now()) @db.Timestamp
+
+  user           User         @relation(fields: [userId], references: [id])
+  courseContent  CourseContent @relation(fields: [courseContentId], references: [id])
+
+  @@map("engagement")
+}
+
+model Feedback {
+  id          Int       @id @default(autoincrement()) @db.Integer
+  courseId    Int       @db.Integer
+  userId      Int       @db.Integer
+  feedbackText String   @db.Text
+  rating      Int       @db.Integer
+  createdAt   DateTime  @default(now()) @db.Timestamp
+
+  course      Course    @relation(fields: [courseId], references: [id])
+  user        User      @relation(fields: [userId], references: [id])
+
+  @@map("feedback")
+}
+
+model Role {
+  id    Int        @id @default(autoincrement())
+  name  String     @unique
+  users UserRoles[]
+}
+
+model UserRoles {
+  userId Int
+  roleId Int
+
+  role Role @relation(fields: [roleId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, roleId])
+}
+
+model RefreshToken {
+  id          String   @id @unique @default(uuid())
+  hashedToken String
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  revoked     Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
