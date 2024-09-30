@@ -18,8 +18,7 @@ const AdminHome = () => {
       <SideBar></SideBar>
       <Routes>
         <Route path="" element={<div>plain admin</div>} />
-        <Route path="me" element={<div>ManageEmployee</div>} />
-        <Route path="ce" element={<div>Create Employee</div>} />
+        <Route path="manage-employee" element={<div>Manage Employee</div>} />
       </Routes>
       <Outlet />
     </div>
