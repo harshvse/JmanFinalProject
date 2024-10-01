@@ -34,7 +34,13 @@ const App = () => {
           <Route path="/registerAdmin" element={<RegisterAdmin />} />
           <Route
             path="/*"
-            element={authUser.roles[0] == "Admin" ? <AdminHome /> : <Home />}
+            element={
+              authUser && authUser.roles[0] == "Admin" ? (
+                <AdminHome />
+              ) : (
+                <Home />
+              )
+            }
           />
           {/* <Route
             path="/admin/:eventId?"

@@ -5,6 +5,7 @@ datasource db {
 
 generator client {
   provider = "prisma-client-js"
+  seed     = "node prisma/seed.js"
 }
 
 model User {
@@ -19,6 +20,7 @@ model User {
 
   team          Team?     @relation(fields: [teamId], references: [id])
   department    Department? @relation(fields: [departmentId], references: [id])
+  courses     CourseUser[] @relation("UserCourses")
   discussions   Discussion[]  @relation("CreatedDiscussions")
   questions     DiscussionQuestion[]
   answers       DiscussionAnswer[]
@@ -59,6 +61,7 @@ model Course {
   createdAt   DateTime  @default(now()) @db.Timestamp
 
   content     CourseContent[]
+  users       CourseUser[] @relation("CourseUsers")
   discussions Discussion[]
   feedbacks   Feedback[]
 
@@ -78,6 +81,16 @@ model CourseContent {
   engagements  Engagement[]
 
   @@map("course_content")
+}
+
+model CourseUser {
+  userId      Int // Ensure this is the same type as User.id
+  courseId    Int // Ensure this is the same type as Course.id
+  
+  user        User        @relation("UserCourses", fields: [userId], references: [id], onDelete: Cascade)
+  course      Course      @relation("CourseUsers", fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@id([userId, courseId]) // Composite primary key
 }
 
 model Discussion {
@@ -152,6 +165,7 @@ model Engagement {
   userId         Int       @db.Integer
   courseContentId Int      @db.Integer
   totalTimeSpent Int       @db.Integer
+  completed      Boolean   @default(false)
   lastAccessed   DateTime  @db.Timestamp
   createdAt      DateTime  @default(now()) @db.Timestamp
 

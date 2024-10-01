@@ -7,12 +7,17 @@
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "lint": "eslint --fix src",
-    "test": "mocha --exit"
+    "test": "mocha --exit",
+    "seed": "node prisma/seed.js"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
   },
   "keywords": [],
   "author": "Harsh Verma",
   "license": "MIT",
   "dependencies": {
+    "@faker-js/faker": "^9.0.3",
     "@prisma/client": "^5.20.0",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
@@ -30,7 +35,7 @@
     "eslint-plugin-import": "^2.26.0",
     "mocha": "^10.1.0",
     "nodemon": "^2.0.20",
-    "prisma": "^5.17.0",
+    "prisma": "^5.20.0",
     "supertest": "^6.3.1"
   }
 }

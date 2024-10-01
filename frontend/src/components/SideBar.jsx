@@ -5,7 +5,12 @@ import { NavLink } from "react-router-dom";
 function SideBar() {
   return (
     <div className={styles.sideBar}>
-      <NavLink className={styles.navLink}>ManageEmployee</NavLink>
+      <NavLink to="/admin/view-employees" className={styles.navLink}>
+        View Employees
+      </NavLink>
+      <NavLink to="/admin/manage-team" className={styles.navLink}>
+        Manage Team
+      </NavLink>
     </div>
   );
 }
