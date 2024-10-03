@@ -1,0 +1,85 @@
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 15vw;
+  padding: 20px;
+  background-color: var(--primary);
+  overflow-y: auto;
+}
+
+.content {
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
+  width: 70vw;
+}
+
+.contentList {
+  padding-inline-start: 0px;
+}
+
+.contentItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  border: 2px solid var(--dark);
+  padding: 10px;
+  width: 90%;
+  border-radius: 7px;
+}
+
+.contentTitle {
+  cursor: pointer;
+  color: var(--dark);
+  text-transform: capitalize;
+  transition: 0.3s;
+}
+
+.contentTitle.selected {
+  font-weight: bold;
+  transform: translateX(10px);
+}
+
+.progressBar {
+  height: 20px;
+  background-color: var(--secondary);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 20px;
+  border: 2px solid var(--lightDark);
+}
+
+.progressFill {
+  height: 100%;
+  background-color: var(--dark);
+  transition: width 0.3s ease-in-out;
+}
+input[type="checkbox"] {
+  width: 1.3rem;
+  height: 1.3rem;
+  accent-color: var(--dark);
+}
+.content {
+  text-align: center;
+}
+
+.content h2 {
+  text-transform: capitalize;
+  font-size: 32px;
+  width: 100%;
+  border-bottom: 2px solid var(--lightDark);
+  padding-bottom: 20px;
+  color: var(--dark);
+  margin-top: 0;
+}
+
+.markContent {
+  color: var(--dark);
+  height: 80%;
+  width: 100%;
+  padding: 10px;
+}

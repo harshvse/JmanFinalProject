@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import styles from "./styles/CourseTiles.module.css";
-import { fetchWrapper } from "../helpers";
+import { fetchWrapper, history } from "../helpers";
 
-const CourseTiles = ({ buttonLabel }) => {
+const CourseTiles = ({ buttonLabel, buttonLink }) => {
   const [coursesData, setCoursesData] = useState("");
-  const [page, setPage] = useState(coursesData.currentPage || 1);
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
 
   const handlePrevPage = () => {
     setPage((prev) => Math.max(prev - 1, 1));
@@ -16,20 +17,49 @@ const CourseTiles = ({ buttonLabel }) => {
     setPage((prev) => Math.min(prev + 1, coursesData.totalPages));
   };
 
+  const handleSearchChange = (e) => {
+    setSearch(e.target.value);
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    setPage(1); // Reset to page 1 for new search
+    fetchCourseData(); // Fetch new data based on search
+  };
+
   useEffect(() => {
     const fetchCourseData = async () => {
       const courseData = await fetchWrapper.get(
         `${
           import.meta.env.VITE_API_URL
-        }/v1/api/course/user/all?page=${page}&pageSize=5`
+        }/v1/api/course/user/all?page=${page}&pageSize=6&search=${search}`
       );
       setCoursesData(courseData);
     };
     fetchCourseData();
-  }, [page]);
+  }, [page, search]);
+
+  const handleButtonClick = (id) => {
+    history.navigate(`./${buttonLink}/${id}`);
+  };
 
   return (
     <div className={styles.container}>
+      {/* Search Bar */}
+      <form onSubmit={handleSearchSubmit} className={styles.searchForm}>
+        <input
+          type="text"
+          placeholder="Search courses..."
+          value={search}
+          onChange={handleSearchChange}
+          className={styles.searchInput}
+        />
+        <button type="submit" className={styles.searchButton}>
+          Search
+        </button>
+      </form>
+
+      {/* Course Grid */}
       <div className={styles.courseGrid}>
         {coursesData &&
           coursesData.courses.map((course) => (
@@ -38,16 +68,23 @@ const CourseTiles = ({ buttonLabel }) => {
               <p className={styles.courseCategory}>{course.category}</p>
               <p className={styles.courseDescription}>
                 {course.description.length > 100
-                  ? course.description.substr(0, 100)
+                  ? course.description.substr(0, 100) + "..."
                   : course.description}
               </p>
               <p className={styles.courseDate}>
                 Created: {new Date(course.createdAt).toLocaleDateString()}
               </p>
-              <button className={styles.courseButton}>{buttonLabel}</button>
+              <button
+                onClick={() => handleButtonClick(course.id)}
+                className={styles.courseButton}
+              >
+                {buttonLabel}
+              </button>
             </div>
           ))}
       </div>
+
+      {/* Pagination */}
       {coursesData && (
         <div className={styles.pagination}>
           <button

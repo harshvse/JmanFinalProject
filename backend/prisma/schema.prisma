@@ -63,6 +63,7 @@ model Course {
   content     CourseContent[]
   users       CourseUser[] @relation("CourseUsers")
   discussions Discussion[]
+  quizzes     Quiz[]
   feedbacks   Feedback[]
 
   @@map("courses")
@@ -77,7 +78,6 @@ model CourseContent {
   createdAt    DateTime  @default(now()) @db.Timestamp
 
   course       Course    @relation(fields: [courseId], references: [id])
-  quizzes      Quiz[]
   engagements  Engagement[]
 
   @@map("course_content")
@@ -135,12 +135,12 @@ model DiscussionAnswer {
 
 model Quiz {
   id          Int       @id @default(autoincrement()) @db.Integer
-  contentId   Int       @db.Integer
+  courseId    Int       @db.Integer  // Change this to link the quiz to the course
   question    String    @db.Text
   correctAnswer String  @db.Text
   createdAt   DateTime  @default(now()) @db.Timestamp
 
-  content     CourseContent @relation(fields: [contentId], references: [id])
+  course      Course    @relation(fields: [courseId], references: [id])  // Relate the quiz to the course
   quizResults QuizResult[]
 
   @@map("quizzes")
@@ -173,6 +173,7 @@ model Engagement {
   courseContent  CourseContent @relation(fields: [courseContentId], references: [id])
 
   @@map("engagement")
+  @@unique([userId, courseContentId]) // Unique constraint
 }
 
 model Feedback {

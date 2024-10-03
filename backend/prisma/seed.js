@@ -199,25 +199,6 @@ async function main() {
     )
   );
 
-  // Assign courses to users (1 to 3 courses per user)
-  await Promise.all(
-    users.map(async (user) => {
-      const courseCount = faker.number.int({ min: 1, max: 3 });
-      const assignedCourses = randomItem(courses);
-
-      await Promise.all(
-        Array.from({ length: courseCount }, async () => {
-          await prisma.userRoles.create({
-            data: {
-              userId: user.id,
-              roleId: randomItem([adminRole.id, userRole.id]), // Admins and Users can view courses
-            },
-          });
-        })
-      );
-    })
-  );
-
   console.log("Extended seed data created successfully");
 }
 

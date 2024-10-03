@@ -1,7 +1,8 @@
 import SideBar from "../components/SideBar";
 import styles from "./styles/Home.module.css";
-import { Outlet, Route, Routes } from "react-router-dom";
+import { Outlet, Route, Routes, useParams } from "react-router-dom";
 import CourseTiles from "../components/CourseTiles";
+import CourseView from "../components/CourseView";
 
 const Home = () => {
   const homeLinks = [
@@ -17,13 +18,24 @@ const Home = () => {
         <Route path="" element={<div>plain Home</div>} />
         <Route
           path="course"
-          element={<CourseTiles buttonLabel="Open Course" />}
+          element={
+            <CourseTiles buttonLabel="Open Course" buttonLink="course" />
+          }
         />
-        <Route path="quiz" element={<CourseTiles buttonLabel="Open Quiz" />} />
+        <Route
+          path="quiz"
+          element={<CourseTiles buttonLabel="Open Quiz" buttonLink="quiz" />}
+        />
         <Route
           path="discussion"
-          element={<CourseTiles buttonLabel="Open Discussion" />}
+          element={
+            <CourseTiles
+              buttonLabel="Open Discussion"
+              buttonLink="discussion"
+            />
+          }
         />
+        <Route path="course/:courseId" element={<CourseView />} />
       </Routes>
       <Outlet />
     </div>

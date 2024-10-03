@@ -6,6 +6,10 @@ const {
   AssignCourseToUser,
   FetchUserCourses,
   RemoveUserCourse,
+  FetchCourseContent,
+  MarkEngagementAsComplete,
+  MarkTimeSpentOnEngagement,
+  CheckEngagementCompletion,
 } = require("./course.services");
 
 const router = express.Router();
@@ -135,14 +139,80 @@ router.get("/user/all", isAuthenticated, async (req, res) => {
 });
 
 // API to remove a course from a user (using body instead of params)
-router.delete("/user/course/remove", async (req, res) => {
-  const { userId, courseId } = req.body;
+router.delete(
+  "/user/course/remove",
+  isAuthenticated,
+  requireRole("Admin"),
+  async (req, res) => {
+    const { userId, courseId } = req.body;
+
+    try {
+      await RemoveUserCourse(userId, courseId);
+      res
+        .status(200)
+        .json({ message: "Course removed from user successfully" });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to remove course from user" });
+    }
+  }
+);
+
+router.get("/:courseId/contents", isAuthenticated, async (req, res) => {
+  const { courseId } = req.params;
 
   try {
-    await RemoveUserCourse(userId, courseId);
-    res.status(200).json({ message: "Course removed from user successfully" });
+    const courseContents = await FetchCourseContent(courseId);
+    if (!courseContents) {
+      return res.status(404).json({ message: "Course content not found" });
+    }
+    return res.status(200).json(courseContents);
   } catch (error) {
-    res.status(500).json({ error: "Failed to remove course from user" });
+    console.error("Error fetching course content:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+// Mark course content as complete
+router.post("/contents/complete", isAuthenticated, async (req, res) => {
+  const { contentId } = req.body;
+  const userId = req.payload.userId;
+
+  try {
+    const engagement = await MarkEngagementAsComplete(contentId, userId);
+    return res.status(201).json({ engagement });
+  } catch (error) {
+    console.error("Error processing engagement:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+// Define the endpoint to check engagement completion
+router.get("/contents/complete/", isAuthenticated, async (req, res) => {
+  const { contentId } = req.query; // Get userId and contentId from query parameters
+  const { userId } = req.payload;
+  try {
+    const isCompleted = await CheckEngagementCompletion(userId, contentId); // Call the service function
+    return res.status(200).json({ completed: isCompleted });
+  } catch (error) {
+    console.error("Error checking engagement completion:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// Update total time spent for engagement
+router.post("/updatedTime", isAuthenticated, async (req, res) => {
+  const { contentId, timeSpent } = req.body;
+  const userId = req.payload.userId;
+
+  try {
+    const engagement = await MarkTimeSpentOnEngagement(
+      contentId,
+      userId,
+      timeSpent
+    );
+  } catch (error) {
+    console.error("Error updating total time spent:", error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 });
 
