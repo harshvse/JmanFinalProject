@@ -1,18 +1,33 @@
-import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-
-import { userActions } from "../store";
+import SideBar from "../components/SideBar";
+import styles from "./styles/Home.module.css";
+import { Outlet, Route, Routes } from "react-router-dom";
+import CourseTiles from "../components/CourseTiles";
 
 const Home = () => {
-  const dispatch = useDispatch();
-  const { user: authUser } = useSelector((x) => x.auth);
-  const { users } = useSelector((x) => x.users);
+  const homeLinks = [
+    { to: "/course", label: "View All Courses" },
+    { to: "/quiz", label: "Quizzes" },
+    { to: "/discussion", label: "Discussions" },
+  ];
 
-  // useEffect(() => {
-  //   dispatch(userActions.getAll());
-  // }, []);
-
-  return <div>Home</div>;
+  return (
+    <div className={styles.homeContainer}>
+      <SideBar links={homeLinks} />
+      <Routes>
+        <Route path="" element={<div>plain Home</div>} />
+        <Route
+          path="course"
+          element={<CourseTiles buttonLabel="Open Course" />}
+        />
+        <Route path="quiz" element={<CourseTiles buttonLabel="Open Quiz" />} />
+        <Route
+          path="discussion"
+          element={<CourseTiles buttonLabel="Open Discussion" />}
+        />
+      </Routes>
+      <Outlet />
+    </div>
+  );
 };
 
 export default Home;

@@ -1,0 +1,6 @@
+.homeContainer {
+  background-color: var(--secondary);
+  height: 94vh;
+  overflow-y: hidden;
+  display: flex;
+}

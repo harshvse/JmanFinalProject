@@ -13,9 +13,14 @@ const AdminHome = () => {
   //   dispatch(userActions.getAll());
   // }, []);
 
+  const adminLinks = [
+    { to: "/admin/view-employees", label: "View Employees" },
+    { to: "/admin/manage-team", label: "Manage Team" },
+  ];
+
   return (
     <div className={styles.homeContainer}>
-      <SideBar></SideBar>
+      <SideBar links={adminLinks} />
       <Routes>
         <Route path="" element={<div>plain admin</div>} />
         <Route path="admin/manage-team" element={<ManageTeam />} />

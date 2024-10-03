@@ -2,17 +2,16 @@ import React from "react";
 import styles from "./styles/SideBar.module.css";
 import { NavLink } from "react-router-dom";
 
-function SideBar() {
+const SideBar = ({ links }) => {
   return (
     <div className={styles.sideBar}>
-      <NavLink to="/admin/view-employees" className={styles.navLink}>
-        View Employees
-      </NavLink>
-      <NavLink to="/admin/manage-team" className={styles.navLink}>
-        Manage Team
-      </NavLink>
+      {links.map((link, index) => (
+        <NavLink key={index} to={link.to} className={styles.navLink}>
+          {link.label}
+        </NavLink>
+      ))}
     </div>
   );
-}
+};
 
 export default SideBar;

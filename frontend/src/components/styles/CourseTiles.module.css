@@ -1,0 +1,103 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.courseGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+  height: 80vh;
+}
+
+.courseTile {
+  background-color: var(--primary);
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s ease-in-out;
+  height: 32vh;
+  position: relative;
+}
+
+.courseTile:hover {
+  transform: translateY(-5px);
+}
+
+.courseTitle {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+  text-transform: uppercase;
+}
+
+.courseCategory {
+  font-size: 0.875rem;
+  color: #6c757d;
+  margin-bottom: 0.5rem;
+}
+
+.courseDescription {
+  font-size: 1rem;
+  color: #495057;
+  margin-bottom: 1rem;
+}
+
+.courseDate {
+  font-size: 0.75rem;
+  color: #6c757d;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.pageInfo {
+  font-size: 1rem;
+  color: var(--dark);
+}
+.paginationButton {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem; /* Reduced gap for better alignment with Material-UI icons */
+  padding: 0.5rem 1rem;
+  background-color: var(--dark);
+  color: var(--primary);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.paginationButton:hover:not(:disabled) {
+  background-color: var(--lightDark);
+}
+
+.paginationButton:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+.courseButton {
+  padding: 5px 20px;
+  background-color: var(--dark);
+  text-transform: uppercase;
+  color: var(--primary);
+  border: 2px solid var(--secondary);
+  border-radius: 6px;
+  position: absolute;
+  bottom: -15px;
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+  width: fit-content;
+}
+
+.courseButton:hover {
+  background-color: var(--lightDark);
+}
