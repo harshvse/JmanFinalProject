@@ -3,6 +3,8 @@ import styles from "./styles/Home.module.css";
 import { Outlet, Route, Routes, useParams } from "react-router-dom";
 import CourseTiles from "../components/CourseTiles";
 import CourseView from "../components/CourseView";
+import Quiz from "../components/Quiz";
+import DiscussionPanel from "../components/DiscussionPanel";
 
 const Home = () => {
   const homeLinks = [
@@ -36,6 +38,8 @@ const Home = () => {
           }
         />
         <Route path="course/:courseId" element={<CourseView />} />
+        <Route path="quiz/:courseId" element={<Quiz />} />
+        <Route path="discussion/:courseId" element={<DiscussionPanel />} />
       </Routes>
       <Outlet />
     </div>

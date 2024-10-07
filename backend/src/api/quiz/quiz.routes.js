@@ -1,31 +1,64 @@
 const express = require("express");
 const router = express.Router();
-const {
-  getQuizzesByContentId,
-  submitQuizAnswer,
-  getQuizResultsByUserId,
-} = require("./course.services");
+const quizService = require("./quiz.services");
+const { isAuthenticated } = require("../../middlewares");
 
-// Get all quizzes for a specific content
-router.get("/:contentId", async (req, res) => {
-  const { contentId } = req.params;
-  const quizzes = await getQuizzesByContentId(contentId);
-  res.json(quizzes);
+router.post("/create", async (req, res) => {
+  const { courseId, title, questions } = req.body;
+  try {
+    const quiz = await quizService.createQuiz(courseId, title, questions);
+    res.json(quiz);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
-// Submit an answer for a quiz
-router.post("/:quizId/submit", async (req, res) => {
+router.get("/:courseId/quizzes", async (req, res) => {
+  const { courseId } = req.params;
+  try {
+    const quizzes = await quizService.getQuizzesForCourse(courseId);
+    res.json(quizzes);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.post("/:quizId/attempt", isAuthenticated, async (req, res) => {
   const { quizId } = req.params;
-  const { userId, selectedAnswer } = req.body;
-  const result = await submitQuizAnswer(userId, quizId, selectedAnswer);
-  res.json(result);
+  const { answers } = req.body;
+  const { userId } = req.payload;
+  try {
+    const result = await quizService.submitQuiz(
+      parseInt(quizId),
+      parseInt(userId),
+      answers
+    );
+    res.status(201).json(result);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
-// Get quiz results for a user
-router.get("/results/:userId", async (req, res) => {
-  const { userId } = req.params;
-  const results = await getQuizResultsByUserId(userId);
-  res.json(results);
+router.get("/:quizId/attempted", isAuthenticated, async (req, res) => {
+  const { quizId } = req.params;
+  const { userId } = req.payload;
+  try {
+    const result = await quizService.hasUserTakenQuiz(quizId, userId);
+    res.status(201).json(result);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.get("/:courseId/results", isAuthenticated, async (req, res) => {
+  const { courseId } = req.params;
+  const { userId } = req.payload;
+  try {
+    const results = await quizService.getUserResultForCourse(courseId, userId);
+    res.json(results);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 module.exports = router;

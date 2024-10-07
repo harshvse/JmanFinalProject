@@ -9,8 +9,8 @@ async function main() {
   const randomItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
   // Create Admin and User roles
-  const adminRole = await prisma.role.findUnique({ where: { name: "Admin" } });
-  const userRole = await prisma.role.findUnique({ where: { name: "User" } });
+  const adminRole = await prisma.role.findFirst({ where: { name: "Admin" } });
+  const userRole = await prisma.role.findFirst({ where: { name: "User" } });
 
   // Create 100 teams
   const teams = await Promise.all(
@@ -93,19 +93,6 @@ async function main() {
     )
   );
 
-  // Create 100 quizzes
-  await Promise.all(
-    Array.from({ length: 100 }, () =>
-      prisma.quiz.create({
-        data: {
-          contentId: randomItem(courseContents).id,
-          question: `${faker.hacker.phrase()}?`,
-          correctAnswer: faker.hacker.phrase(),
-        },
-      })
-    )
-  );
-
   // Create 100 discussions
   const discussions = await Promise.all(
     Array.from({ length: 100 }, () =>
@@ -144,32 +131,22 @@ async function main() {
     )
   );
 
-  // Create 100 quiz results
-  await Promise.all(
-    Array.from({ length: 100 }, async () =>
-      prisma.quizResult.create({
-        data: {
-          quizId: randomItem(await prisma.quiz.findMany()).id,
-          userId: randomItem(users).id,
-          selectedAnswer: faker.lorem.sentence(),
-          isCorrect: faker.datatype.boolean(),
-        },
-      })
-    )
-  );
-
   // Create 100 engagements
   await Promise.all(
-    Array.from({ length: 100 }, () =>
-      prisma.engagement.create({
-        data: {
-          userId: randomItem(users).id,
-          courseContentId: randomItem(courseContents).id,
-          totalTimeSpent: faker.number.int({ min: 60, max: 3600 }),
-          lastAccessed: faker.date.past(),
-        },
-      })
-    )
+    Array.from({ length: 100 }, () => {
+      try {
+        prisma.engagement.create({
+          data: {
+            userId: randomItem(users).id,
+            courseContentId: randomItem(courseContents).id,
+            totalTimeSpent: faker.number.int({ min: 60, max: 3600 }),
+            lastAccessed: faker.date.past(),
+          },
+        });
+      } catch (error) {
+        console.log("error");
+      }
+    })
   );
 
   // Create 100 feedbacks
@@ -181,19 +158,6 @@ async function main() {
           userId: randomItem(users).id,
           feedbackText: faker.lorem.paragraph(),
           rating: faker.number.int({ min: 1, max: 5 }),
-        },
-      })
-    )
-  );
-
-  // Create 100 refresh tokens
-  await Promise.all(
-    Array.from({ length: 100 }, () =>
-      prisma.refreshToken.create({
-        data: {
-          hashedToken: faker.string.uuid(),
-          userId: randomItem(users).id,
-          revoked: faker.datatype.boolean(),
         },
       })
     )

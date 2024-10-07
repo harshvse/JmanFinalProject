@@ -26,16 +26,16 @@ const CourseTiles = ({ buttonLabel, buttonLink }) => {
     setPage(1); // Reset to page 1 for new search
     fetchCourseData(); // Fetch new data based on search
   };
+  const fetchCourseData = async () => {
+    const courseData = await fetchWrapper.get(
+      `${
+        import.meta.env.VITE_API_URL
+      }/v1/api/course/user/all?page=${page}&pageSize=6&search=${search}`
+    );
+    setCoursesData(courseData);
+  };
 
   useEffect(() => {
-    const fetchCourseData = async () => {
-      const courseData = await fetchWrapper.get(
-        `${
-          import.meta.env.VITE_API_URL
-        }/v1/api/course/user/all?page=${page}&pageSize=6&search=${search}`
-      );
-      setCoursesData(courseData);
-    };
     fetchCourseData();
   }, [page, search]);
 

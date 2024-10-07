@@ -1,50 +1,129 @@
-const prisma = require("../prisma"); // Assuming prisma is initialized
+const { PrismaClient } = require("@prisma/client");
+const prisma = new PrismaClient();
 
-// Get quizzes for a specific course content
-const getQuizzesByContentId = async (contentId) => {
-  return await prisma.quiz.findMany({
-    where: { contentId: parseInt(contentId) },
-    select: {
-      id: true,
-      question: true,
-    },
-  });
-};
-
-// Submit an answer for a quiz
-const submitQuizAnswer = async (userId, quizId, selectedAnswer) => {
-  const quiz = await prisma.quiz.findUnique({
-    where: { id: quizId },
-    select: {
-      correctAnswer: true,
-    },
-  });
-
-  const isCorrect = quiz.correctAnswer === selectedAnswer;
-
-  // Save the result
-  return await prisma.quizResult.create({
+const createQuiz = async (courseId, title, questions) => {
+  return await prisma.quiz.create({
     data: {
-      quizId,
-      userId,
-      selectedAnswer,
-      isCorrect,
+      courseId,
+      title,
+      questions: {
+        create: questions.map((q) => ({
+          question: q.question,
+          options: {
+            create: q.options.map((o) => ({
+              option: o.option,
+              isCorrect: o.isCorrect,
+            })),
+          },
+        })),
+      },
     },
   });
 };
 
-// Get quiz results for a user
-const getQuizResultsByUserId = async (userId) => {
-  return await prisma.quizResult.findMany({
-    where: { userId: parseInt(userId) },
+const getQuizzesForCourse = async (courseId) => {
+  return await prisma.quiz.findMany({
+    where: { courseId: parseInt(courseId) },
     include: {
-      quiz: true,
+      questions: {
+        include: {
+          options: true,
+        },
+      },
+    },
+  });
+};
+
+const submitQuiz = async (quizId, userId, answers) => {
+  try {
+    const existingResult = await prisma.quizResult.findFirst({
+      where: {
+        userId: userId,
+        quizId: quizId,
+      },
+    });
+
+    if (existingResult) {
+      console.log("Result Already Exists. How did you get here??");
+      return existingResult;
+    }
+
+    // Fetch the quiz with questions and options
+    const quiz = await prisma.quiz.findUnique({
+      where: { id: quizId },
+      include: { questions: { include: { options: true } } },
+    });
+
+    if (!quiz) {
+      return { error: "Quiz not found" }; // Change to JSON response format
+    }
+
+    let score = 0;
+
+    // Convert answers from object to array
+    const formattedAnswers = Object.entries(answers).map(
+      ([questionId, selectedOptionId]) => ({
+        question_id: parseInt(questionId, 10), // Convert to integer
+        selected_option_id: selectedOptionId,
+      })
+    );
+
+    // Calculate score based on provided answers
+    formattedAnswers.forEach((answer) => {
+      const question = quiz.questions.find((q) => q.id === answer.question_id);
+      if (question) {
+        const selectedOption = question.options.find(
+          (o) => o.id === answer.selected_option_id
+        );
+
+        // Check if the selected option is correct
+        if (selectedOption) {
+          if (selectedOption.isCorrect) {
+            score++;
+          }
+        }
+      }
+    });
+
+    // Save the quiz result
+    const quizResult = await prisma.quizResult.create({
+      data: {
+        userId: userId,
+        quizId: quizId,
+        score: score,
+      },
+    });
+
+    return quizResult;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const hasUserTakenQuiz = async (quizId, userId) => {
+  return await prisma.quizResult.findFirst({
+    where: {
+      quizId: parseInt(quizId),
+      userId: parseInt(userId),
+    },
+  });
+};
+
+const getUserResultForCourse = async (courseId, userId) => {
+  return await prisma.quizResult.findFirst({
+    where: {
+      quiz: {
+        courseId: parseInt(courseId),
+      },
+      userId: parseInt(userId),
     },
   });
 };
 
 module.exports = {
-  getQuizzesByContentId,
-  submitQuizAnswer,
-  getQuizResultsByUserId,
+  createQuiz,
+  getQuizzesForCourse,
+  submitQuiz,
+  hasUserTakenQuiz,
+  getUserResultForCourse,
 };

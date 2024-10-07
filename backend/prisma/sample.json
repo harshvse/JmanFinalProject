@@ -1,0 +1,82 @@
+[
+  {
+    "id": 1,
+    "courseId": 1,
+    "title": "Sample Quiz",
+    "createdAt": "2024-10-04T09:53:31.000Z",
+    "questions": [
+      {
+        "id": 1,
+        "quizId": 1,
+        "question": "What is the capital of France?",
+        "createdAt": "2024-10-04T09:53:31.000Z",
+        "options": [
+          {
+            "id": 1,
+            "questionId": 1,
+            "option": "Paris",
+            "isCorrect": true,
+            "createdAt": "2024-10-04T09:53:31.000Z"
+          },
+          {
+            "id": 2,
+            "questionId": 1,
+            "option": "London",
+            "isCorrect": false,
+            "createdAt": "2024-10-04T09:53:31.000Z"
+          },
+          {
+            "id": 3,
+            "questionId": 1,
+            "option": "Berlin",
+            "isCorrect": false,
+            "createdAt": "2024-10-04T09:53:31.000Z"
+          },
+          {
+            "id": 4,
+            "questionId": 1,
+            "option": "Madrid",
+            "isCorrect": false,
+            "createdAt": "2024-10-04T09:53:31.000Z"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "quizId": 1,
+        "question": "What is 2 + 2?",
+        "createdAt": "2024-10-04T09:53:31.000Z",
+        "options": [
+          {
+            "id": 5,
+            "questionId": 2,
+            "option": "3",
+            "isCorrect": false,
+            "createdAt": "2024-10-04T09:53:31.000Z"
+          },
+          {
+            "id": 6,
+            "questionId": 2,
+            "option": "4",
+            "isCorrect": true,
+            "createdAt": "2024-10-04T09:53:31.000Z"
+          },
+          {
+            "id": 7,
+            "questionId": 2,
+            "option": "5",
+            "isCorrect": false,
+            "createdAt": "2024-10-04T09:53:31.000Z"
+          },
+          {
+            "id": 8,
+            "questionId": 2,
+            "option": "6",
+            "isCorrect": false,
+            "createdAt": "2024-10-04T09:53:31.000Z"
+          }
+        ]
+      }
+    ]
+  }
+]

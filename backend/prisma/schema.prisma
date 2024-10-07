@@ -93,6 +93,49 @@ model CourseUser {
   @@id([userId, courseId]) // Composite primary key
 }
 
+model Quiz {
+  id          Int           @id @default(autoincrement()) @db.Integer
+  courseId    Int           @db.Integer
+  title       String        @db.VarChar(255)
+  createdAt   DateTime      @default(now()) @db.Timestamp
+
+  course      Course        @relation(fields: [courseId], references: [id])
+  questions   QuizQuestion[]
+  results     QuizResult[]  // Add this line
+}
+
+model QuizQuestion {
+  id          Int           @id @default(autoincrement()) @db.Integer
+  quizId      Int           @db.Integer
+  question    String        @db.Text
+  createdAt   DateTime      @default(now()) @db.Timestamp
+
+  quiz        Quiz          @relation(fields: [quizId], references: [id])
+  options     QuizOption[]
+}
+
+model QuizOption {
+  id          Int           @id @default(autoincrement()) @db.Integer
+  questionId  Int           @db.Integer
+  option      String        @db.Text
+  isCorrect   Boolean       @default(false)
+  createdAt   DateTime      @default(now()) @db.Timestamp
+
+  question    QuizQuestion  @relation(fields: [questionId], references: [id])
+}
+
+model QuizResult {
+  id          Int           @id @default(autoincrement()) @db.Integer
+  userId      Int           @db.Integer
+  quizId      Int           @db.Integer
+  score       Int
+  completedAt DateTime      @default(now()) @db.Timestamp
+
+  user        User          @relation(fields: [userId], references: [id])
+  quiz        Quiz          @relation(fields: [quizId], references: [id])
+}
+
+
 model Discussion {
   id          Int       @id @default(autoincrement()) @db.Integer
   courseId    Int       @db.Integer
@@ -131,33 +174,6 @@ model DiscussionAnswer {
   user        User               @relation(fields: [userId], references: [id])
 
   @@map("discussion_answers")
-}
-
-model Quiz {
-  id          Int       @id @default(autoincrement()) @db.Integer
-  courseId    Int       @db.Integer  // Change this to link the quiz to the course
-  question    String    @db.Text
-  correctAnswer String  @db.Text
-  createdAt   DateTime  @default(now()) @db.Timestamp
-
-  course      Course    @relation(fields: [courseId], references: [id])  // Relate the quiz to the course
-  quizResults QuizResult[]
-
-  @@map("quizzes")
-}
-
-model QuizResult {
-  id          Int       @id @default(autoincrement()) @db.Integer
-  quizId      Int       @db.Integer
-  userId      Int       @db.Integer
-  selectedAnswer String @db.Text
-  isCorrect   Boolean   @db.Boolean
-  createdAt   DateTime  @default(now()) @db.Timestamp
-
-  quiz        Quiz      @relation(fields: [quizId], references: [id])
-  user        User      @relation(fields: [userId], references: [id])
-
-  @@map("quiz_results")
 }
 
 model Engagement {

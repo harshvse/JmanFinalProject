@@ -1,0 +1,86 @@
+.quizContainer {
+  text-align: center;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.quizTitle {
+  text-transform: uppercase;
+  color: var(--dark);
+}
+
+.quizSubTitle {
+  color: var(--lightDark);
+  text-transform: capitalize;
+}
+
+.quizQuestionContainer {
+  width: 50vw;
+  border: 2px solid var(--dark);
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 11px;
+  text-align: left;
+}
+
+.quizQuestionContainer p {
+  color: var(--dark);
+}
+
+.radioButtons {
+  margin: 10px;
+}
+.inputs {
+  display: flex;
+  margin-bottom: 1rem; /* Space below the inputs container */
+}
+
+.inputs .radioButtons {
+  appearance: none; /* Remove default styling */
+  margin: 0; /* Reset margin */
+  width: 20px; /* Custom width */
+  height: 20px; /* Custom height */
+  border-radius: 50%; /* Round shape */
+  border: 2px solid var(--lightDark); /* Border color */
+  outline: none; /* Remove outline */
+  cursor: pointer; /* Pointer cursor on hover */
+  position: relative; /* Position relative for inner circle */
+  transition: background-color 0.3s, border-color 0.3s; /* Smooth transitions */
+}
+
+.inputs .radioButtons:checked {
+  border-color: var(--dark); /* Change border color when checked */
+}
+
+.inputs .radioButtons:checked::before {
+  content: ""; /* Create the inner circle */
+  position: absolute;
+  top: 50%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  width: 10px; /* Inner circle size */
+  height: 10px; /* Inner circle size */
+  border-radius: 50%; /* Round shape */
+  background-color: var(--dark); /* Inner circle color */
+  transform: translate(-50%, -50%); /* Center it */
+}
+
+.inputs label {
+  margin-left: 8px; /* Space between radio button and label */
+  cursor: pointer; /* Pointer cursor for labels */
+  font-size: 16px; /* Font size */
+  color: var(--dark); /* Label text color */
+  transition: color 0.3s; /* Smooth transition on hover */
+}
+
+.inputs .radioButtons:hover {
+  border-color: var(--dark); /* Change label color on hover */
+}
+
+.submitButton {
+  padding: 10px 20px;
+  background-color: var(--dark);
+  color: var(--primary);
+  border: 2px solid var(--lightDark);
+  border-radius: 7px;
+}
