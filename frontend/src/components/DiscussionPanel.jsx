@@ -82,6 +82,11 @@ const DiscussionPanel = () => {
               </button>
             </div>
           </div>
+          {questions.length == 0 ? (
+            <div className={styles.notFound}>No Questions Yet</div>
+          ) : (
+            ""
+          )}
           {questions.map((question) => (
             <div
               key={question.id}

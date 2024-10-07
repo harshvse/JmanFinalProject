@@ -61,6 +61,11 @@ const CourseTiles = ({ buttonLabel, buttonLink }) => {
 
       {/* Course Grid */}
       <div className={styles.courseGrid}>
+        {!coursesData ? (
+          <div className={styles.notFound}>No Data Found</div>
+        ) : (
+          ""
+        )}
         {coursesData &&
           coursesData.courses.map((course) => (
             <div key={course.id} className={styles.courseTile}>

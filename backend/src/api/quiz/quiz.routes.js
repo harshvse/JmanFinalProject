@@ -1,19 +1,24 @@
 const express = require("express");
 const router = express.Router();
 const quizService = require("./quiz.services");
-const { isAuthenticated } = require("../../middlewares");
+const { isAuthenticated, requireRole } = require("../../middlewares");
 
-router.post("/create", async (req, res) => {
-  const { courseId, title, questions } = req.body;
-  try {
-    const quiz = await quizService.createQuiz(courseId, title, questions);
-    res.json(quiz);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+router.post(
+  "/create",
+  isAuthenticated,
+  requireRole("Admin"),
+  async (req, res) => {
+    const { courseId, title, questions } = req.body;
+    try {
+      const quiz = await quizService.createQuiz(courseId, title, questions);
+      res.json(quiz);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
   }
-});
+);
 
-router.get("/:courseId/quizzes", async (req, res) => {
+router.get("/:courseId/quizzes", isAuthenticated, async (req, res) => {
   const { courseId } = req.params;
   try {
     const quizzes = await quizService.getQuizzesForCourse(courseId);

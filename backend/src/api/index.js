@@ -6,6 +6,8 @@ const admin = require("./admin/admin.routes");
 const course = require("./course/course.routes");
 const quiz = require("./quiz/quiz.routes");
 const discussion = require("./discussion/discussion.routes");
+const feedback = require("./feedback/feedback.routes");
+const userDashboard = require("./dashboard/user_dashboard.routes");
 const router = express.Router();
 
 router.get("/", (req, res) => {
@@ -20,5 +22,6 @@ router.use("/admin", admin);
 router.use("/course", course);
 router.use("/quiz", quiz);
 router.use("/discussion", discussion);
-
+router.use("/feedback", feedback);
+router.use("/user-dashboard", userDashboard);
 module.exports = router;

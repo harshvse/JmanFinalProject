@@ -95,6 +95,11 @@ const QuizComponent = () => {
 
   return (
     <div className={styles.quizContainer}>
+      {quizzes.length == 0 ? (
+        <div className={styles.notFound}>No Quiz Data Found</div>
+      ) : (
+        ""
+      )}
       {quizzes.map((quiz) => (
         <div key={quiz.id}>
           <h2 className={styles.quizTitle}>{quiz.title}</h2>

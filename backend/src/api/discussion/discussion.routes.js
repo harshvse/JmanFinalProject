@@ -9,7 +9,7 @@ const {
 const router = express.Router();
 
 // Get all questions for a course
-router.get("/:courseId/questions", async (req, res) => {
+router.get("/:courseId/questions", isAuthenticated, async (req, res) => {
   const { courseId } = req.params;
   try {
     const questions = await GetAllQuestions(courseId);
@@ -34,7 +34,7 @@ router.post("/:courseId/create", isAuthenticated, async (req, res) => {
 });
 
 // Get a specific question with its answers
-router.get("/questions/:questionId", async (req, res) => {
+router.get("/questions/:questionId", isAuthenticated, async (req, res) => {
   const { questionId } = req.params;
   try {
     const question = await GetQuestion(questionId);
