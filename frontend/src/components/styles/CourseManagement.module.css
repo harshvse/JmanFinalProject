@@ -1,0 +1,108 @@
+.mainCon {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  color: var(--dark);
+}
+.container {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+}
+
+.form {
+  margin-bottom: 20px;
+}
+
+.input,
+.textarea,
+.select {
+  display: block;
+  width: 400px;
+  margin-bottom: 10px;
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 7px;
+  border: 2px solid var(--dark);
+  color: var(--dark);
+}
+.input::placeholder {
+  color: var(--dark);
+}
+.textarea::placeholder {
+  color: var(--dark);
+}
+
+.textarea {
+  height: 400px;
+}
+.select {
+  width: 100%;
+}
+
+.button {
+  padding: 10px 15px;
+  background-color: var(--dark);
+  color: var(--primary);
+  border: none;
+  cursor: pointer;
+  border-radius: 7px;
+}
+
+.button:hover {
+  background-color: var(--lightDark);
+}
+.courseList {
+  max-width: 500px;
+  min-width: 500px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.row {
+  border-bottom: 1px solid #ddd;
+}
+
+.deleteButton {
+  background-color: var(--dark) !important;
+  color: var(--primary) !important;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.deleteButton:hover {
+  background-color: var(--lightDark) !important;
+}
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+}
+
+.pagination button {
+  background-color: var(--dark);
+  color: var(--primary);
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 150px;
+}
+
+.pagination button:disabled {
+  background-color: var(--primary);
+  color: var(--lightDark);
+  cursor: not-allowed;
+}
+
+.pagination span {
+  font-size: 16px;
+}

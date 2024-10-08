@@ -65,6 +65,74 @@ const UserDashboard = () => {
     }
   };
 
+  const barData = {
+    labels: ["Courses Completed", "Quizzes Attempted"],
+    datasets: [
+      {
+        label: "User Stats",
+        data: [coursesCompleted, quizzesAttempted],
+        backgroundColor: ["#f4d9d0", "#d9abab"],
+      },
+    ],
+  };
+
+  const barOptions = {
+    plugins: {
+      legend: {
+        labels: {
+          color: "white", // Set legend text color to white
+        },
+      },
+      tooltip: {
+        titleColor: "white", // Tooltip title color
+        bodyColor: "white", // Tooltip body color
+      },
+    },
+    scales: {
+      x: {
+        ticks: {
+          color: "white", // X-axis tick color
+        },
+        title: {
+          color: "white", // X-axis title color
+        },
+      },
+      y: {
+        ticks: {
+          color: "white", // Y-axis tick color
+        },
+        title: {
+          color: "white", // Y-axis title color
+        },
+      },
+    },
+  };
+
+  const pieData = {
+    labels: ["Average Quiz Score"],
+    datasets: [
+      {
+        label: "Average Quiz Score",
+        data: [averageQuizScore, 100 - averageQuizScore],
+        backgroundColor: ["#f4d9d0", "#d9abab"],
+      },
+    ],
+  };
+
+  const pieOptions = {
+    plugins: {
+      legend: {
+        labels: {
+          color: "white", // Set legend text color to white
+        },
+      },
+      tooltip: {
+        titleColor: "white", // Tooltip title color
+        bodyColor: "white", // Tooltip body color
+      },
+    },
+  };
+
   return (
     <div className={styles.dashboardContainer}>
       <h2 className={styles.title}>User Dashboard</h2>
@@ -101,34 +169,12 @@ const UserDashboard = () => {
       <div className={styles.chartContainer}>
         <div className={styles.chartCard}>
           <h3>Course Completion vs Attempted Quizzes</h3>
-          <Bar
-            data={{
-              labels: ["Courses Completed", "Quizzes Attempted"],
-              datasets: [
-                {
-                  label: "User Stats",
-                  data: [coursesCompleted, quizzesAttempted],
-                  backgroundColor: ["#4caf50", "#ff9800"],
-                },
-              ],
-            }}
-          />
+          <Bar data={barData} options={barOptions} />
         </div>
 
         <div className={styles.chartCard}>
           <h3>Average Quiz Score</h3>
-          <Pie
-            data={{
-              labels: ["Average Quiz Score"],
-              datasets: [
-                {
-                  label: "Average Quiz Score",
-                  data: [averageQuizScore, 100 - averageQuizScore],
-                  backgroundColor: ["#2196f3", "#e0e0e0"],
-                },
-              ],
-            }}
-          />
+          <Pie data={pieData} options={pieOptions} />
         </div>
       </div>
     </div>

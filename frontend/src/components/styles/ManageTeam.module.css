@@ -3,8 +3,8 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  padding: 10px;
 }
 .title {
   text-transform: uppercase;
@@ -17,6 +17,7 @@
 
 .buttons {
   display: flex;
+  margin: 20px;
 }
 
 .createButton {
@@ -25,17 +26,25 @@
   border: 2px solid var(--dark);
   border-radius: 10px;
   width: 150px;
-  height: 150px;
+  height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 100px;
   background-color: var(--primary);
   transition: 0.5s;
+  margin: 10px;
 }
 
 .createButton:hover {
   color: var(--primary);
   border: 2px solid var(--primary);
   background-color: var(--dark);
+}
+
+.tableContainer {
+  display: flex;
+}
+
+.table {
+  margin: 10px;
 }

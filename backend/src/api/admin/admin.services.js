@@ -3,12 +3,16 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 async function CreateTeamWithName(name) {
-  const newTeam = await prisma.team.create({
-    data: {
-      name,
-    },
-  });
-  return newTeam;
+  try {
+    const newTeam = await prisma.team.create({
+      data: {
+        name,
+      },
+    });
+    return newTeam;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 async function CreateDepartmentWithName(name) {
@@ -29,6 +33,65 @@ async function FetchAllDepartments() {
   return departments;
 }
 
+// Function to fetch all teams with pagination and search
+async function FetchAllTeamsPaginated(page, pageSize, search) {
+  const teams = await prisma.team.findMany({
+    where: {
+      name: {
+        contains: search,
+        mode: "insensitive", // Case-insensitive search
+      },
+    },
+    skip: (page - 1) * pageSize,
+    take: Number(pageSize),
+  });
+
+  const totalTeams = await prisma.team.count({
+    where: {
+      name: {
+        contains: search,
+        mode: "insensitive",
+      },
+    },
+  });
+
+  return {
+    total: totalTeams,
+    page: Number(page),
+    pageSize: Number(pageSize),
+    teams,
+  };
+}
+
+// Function to fetch all departments with pagination and search
+async function FetchAllDepartmentsPaginated(page, pageSize, search) {
+  const departments = await prisma.department.findMany({
+    where: {
+      name: {
+        contains: search,
+        mode: "insensitive", // Case-insensitive search
+      },
+    },
+    skip: (page - 1) * pageSize,
+    take: Number(pageSize),
+  });
+
+  const totalDepartments = await prisma.department.count({
+    where: {
+      name: {
+        contains: search,
+        mode: "insensitive",
+      },
+    },
+  });
+
+  return {
+    total: totalDepartments,
+    page: Number(page),
+    pageSize: Number(pageSize),
+    departments,
+  };
+}
 async function FetchAllNonAdminUsers(page, pageSize, searchParam) {
   // Calculate skip value
   const skip = (page - 1) * pageSize;
@@ -104,4 +167,6 @@ module.exports = {
   FetchAllTeams,
   FetchAllDepartments,
   FetchAllNonAdminUsers,
+  FetchAllTeamsPaginated,
+  FetchAllDepartmentsPaginated,
 };

@@ -1,6 +1,7 @@
 .sideBar {
   height: 100%;
-  width: 10%;
+  min-width: 300px;
+  max-width: 300px;
   background-color: var(--dark);
   text-align: center;
   padding-top: 2rem;

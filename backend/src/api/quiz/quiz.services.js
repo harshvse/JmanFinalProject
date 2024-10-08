@@ -2,23 +2,46 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 const createQuiz = async (courseId, title, questions) => {
-  return await prisma.quiz.create({
-    data: {
-      courseId,
-      title,
-      questions: {
-        create: questions.map((q) => ({
-          question: q.question,
-          options: {
-            create: q.options.map((o) => ({
-              option: o.option,
-              isCorrect: o.isCorrect,
-            })),
-          },
-        })),
+  try {
+    const quiz = await prisma.quiz.create({
+      data: {
+        courseId,
+        title,
+        questions: {
+          create: questions.map((q) => ({
+            question: q.question,
+            options: {
+              create: q.options.map((o) => ({
+                option: o.option,
+                isCorrect: o.isCorrect,
+              })),
+            },
+          })),
+        },
       },
-    },
-  });
+    });
+    return quiz;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const CheckExistingQuiz = async (courseId) => {
+  try {
+    // Check if a quiz exists for the given courseId
+    const quiz = await prisma.quiz.findFirst({
+      where: { courseId: parseInt(courseId) },
+    });
+
+    // Send the response based on whether the quiz exists
+    if (quiz) {
+      return { exists: true };
+    } else {
+      return { exists: false };
+    }
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const getQuizzesForCourse = async (courseId) => {
@@ -126,4 +149,5 @@ module.exports = {
   submitQuiz,
   hasUserTakenQuiz,
   getUserResultForCourse,
+  CheckExistingQuiz,
 };

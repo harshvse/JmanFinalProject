@@ -10,13 +10,30 @@ router.post(
   async (req, res) => {
     const { courseId, title, questions } = req.body;
     try {
-      const quiz = await quizService.createQuiz(courseId, title, questions);
+      const quiz = await quizService.createQuiz(
+        parseInt(courseId),
+        title,
+        questions
+      );
       res.json(quiz);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
   }
 );
+router.get("/check/:courseId", async (req, res) => {
+  const { courseId } = req.params;
+  try {
+    const checkQuiz = await quizService.CheckExistingQuiz(courseId);
+    console.log(checkQuiz);
+    res.status(201).json(checkQuiz);
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ error: "An error occurred while checking for the quiz." });
+  }
+});
 
 router.get("/:courseId/quizzes", isAuthenticated, async (req, res) => {
   const { courseId } = req.params;

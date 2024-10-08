@@ -35,13 +35,17 @@ const AddNewContentToCourse = async (
 };
 
 const AssignCourseToUser = async (userId, courseId) => {
-  const courseUser = await prisma.courseUser.create({
-    data: {
-      user: { connect: { id: userId } },
-      course: { connect: { id: Number(courseId) } },
-    },
-  });
-  return courseUser;
+  try {
+    const courseUser = await prisma.courseUser.create({
+      data: {
+        user: { connect: { id: parseInt(userId) } },
+        course: { connect: { id: parseInt(courseId) } },
+      },
+    });
+    return courseUser;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const FetchUserCourses = async (
@@ -207,6 +211,41 @@ const CheckEngagementCompletion = async (userId, contentId) => {
   });
   return engagement;
 };
+
+const FetchAllCourses = async (page, pageSize, skip, search) => {
+  try {
+    const [courses, totalCourses] = await prisma.$transaction([
+      prisma.course.findMany({
+        where: {
+          OR: [
+            { title: { contains: search, mode: "insensitive" } },
+            { description: { contains: search, mode: "insensitive" } },
+          ],
+        },
+        skip,
+        take: pageSize,
+      }),
+      prisma.course.count({
+        where: {
+          OR: [
+            { title: { contains: search, mode: "insensitive" } },
+            { description: { contains: search, mode: "insensitive" } },
+          ],
+        },
+      }),
+    ]);
+
+    const totalPages = Math.ceil(totalCourses / pageSize);
+    return {
+      courses,
+      currentPage: page,
+      totalPages,
+      totalCourses,
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
 module.exports = {
   CreateNewCourse,
   AddNewContentToCourse,
@@ -217,4 +256,5 @@ module.exports = {
   MarkEngagementAsComplete,
   MarkTimeSpentOnEngagement,
   CheckEngagementCompletion,
+  FetchAllCourses,
 };

@@ -30,7 +30,8 @@ const CreateModal = ({ open, type, handleClose }) => {
 
     try {
       const nameData = await fetchWrapper.post(
-        `${import.meta.env.VITE_API_URL}/v1/admin/create${type}`
+        `${import.meta.env.VITE_API_URL}/v1/api/admin/create${type}`,
+        { name }
       );
       console.log(`New ${type} ${nameData} created`);
     } catch (error) {

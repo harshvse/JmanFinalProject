@@ -1,0 +1,80 @@
+.container {
+  max-width: 50%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.title {
+  text-align: center;
+  color: var(--dark);
+  margin-bottom: 20px;
+}
+
+.selectionContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.selectionBox {
+  width: 48%;
+}
+
+.searchInput {
+  width: 95%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 2px solid var(--dark);
+  border-radius: 7px;
+  color: var(--dark);
+}
+
+.searchInput::placeholder {
+  color: var(--dark);
+}
+
+.select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 2px solid var(--dark);
+  border-radius: 4px;
+  color: var(--dark);
+}
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.pageButton {
+  padding: 5px 10px;
+  background-color: var(--dark);
+  border: 2px solid var(--lightDark);
+  border-radius: 7px;
+  cursor: pointer;
+  color: var(--primary);
+}
+
+.pageButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.assignButton {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: var(--dark);
+  color: var(--primary);
+  border: 2px solid var(--lightDark);
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.assignButton:hover {
+  background-color: var(--lightDark);
+}

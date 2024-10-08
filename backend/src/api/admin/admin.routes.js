@@ -6,6 +6,8 @@ const {
   FetchAllTeams,
   FetchAllDepartments,
   FetchAllNonAdminUsers,
+  FetchAllTeamsPaginated,
+  FetchAllDepartmentsPaginated,
 } = require("./admin.services");
 const router = express.Router();
 
@@ -15,7 +17,7 @@ router.post(
   requireRole("Admin"),
   async (req, res) => {
     const { name } = req.body;
-
+    console.log(name);
     if (!name) {
       return res.status(400).json({ error: "Team name is required" });
     }
@@ -77,6 +79,46 @@ router.get(
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Failed to fetch teams" });
+    }
+  }
+);
+
+// Route to fetch all teams with optional pagination and search
+router.get(
+  "/getTeams",
+  isAuthenticated,
+  requireRole("Admin"),
+  async (req, res) => {
+    try {
+      const { page = 1, pageSize = 10, search = "" } = req.query;
+
+      const teams = await FetchAllTeamsPaginated(page, pageSize, search);
+      res.status(200).json(teams);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Failed to fetch teams" });
+    }
+  }
+);
+
+// Route to fetch all departments with optional pagination and search
+router.get(
+  "/getDepartments",
+  isAuthenticated,
+  requireRole("Admin"),
+  async (req, res) => {
+    try {
+      const { page = 1, pageSize = 10, search = "" } = req.query;
+
+      const departments = await FetchAllDepartmentsPaginated(
+        page,
+        pageSize,
+        search
+      );
+      res.status(200).json(departments);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Failed to fetch departments" });
     }
   }
 );

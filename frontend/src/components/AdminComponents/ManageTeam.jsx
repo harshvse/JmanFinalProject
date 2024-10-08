@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import styles from "./styles/ManageTeam.module.css";
-import CreateModal from "./CreateModal";
+import styles from "../styles/ManageTeam.module.css";
+import CreateModal from "../CreateModal";
+import TeamTable from "./TeamTable";
+import DepartmentTable from "./DepartmentTable";
 
 function ManageTeam() {
   const [modalType, setModalType] = useState("");
@@ -40,6 +42,14 @@ function ManageTeam() {
         type={modalType}
         handleClose={handleCloseModal}
       />
+      <div className={styles.tableContainer}>
+        <div className={styles.table}>
+          <TeamTable />
+        </div>
+        <div className={styles.table}>
+          <DepartmentTable />
+        </div>
+      </div>
     </div>
   );
 }

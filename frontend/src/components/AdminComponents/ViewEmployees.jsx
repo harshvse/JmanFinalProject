@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import styles from "./styles/ViewEmployees.module.css";
+import styles from "../styles/ViewEmployees.module.css";
 import EmployeeTable from "./EmployeeTable";
-import { fetchWrapper } from "../helpers";
+import { fetchWrapper } from "../../helpers";
 
 const ViewEmployees = () => {
   const [departments, setDepartments] = useState([]);

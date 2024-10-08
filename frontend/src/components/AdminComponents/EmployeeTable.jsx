@@ -13,10 +13,10 @@ import {
   InputLabel,
   FormControl,
   TablePagination,
-  Button,
   CircularProgress,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import styles from "../styles/EmployeeTable.module.css"; // Import the CSS module
 
 const EmployeeTable = ({
   onFetchEmployees,
@@ -67,7 +67,7 @@ const EmployeeTable = ({
       await OnTeamUpdate(employeeId, teamId);
       fetchEmployees();
     } catch (error) {
-      console.error(`Failed to update employee team ${teamid}`, error);
+      console.error(`Failed to update employee team ${teamId}`, error);
     }
   };
 
@@ -84,25 +84,26 @@ const EmployeeTable = ({
   };
 
   return (
-    <div>
-      <TextField
-        label="Search employees"
+    <div className={styles.container}>
+      <input
+        placeholder="Search employees"
+        type="text"
         variant="outlined"
         value={searchTerm}
         onChange={handleSearch}
         InputProps={{
           endAdornment: <SearchIcon />,
         }}
-        style={{ marginBottom: "20px" }}
+        className={styles.input} // Apply CSS module class
       />
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
+      <TableContainer component={Paper} className={styles.tableContainer}>
+        <Table className={styles.table}>
+          <TableHead className={styles.tableHead}>
             <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Team</TableCell>
-              <TableCell>Department</TableCell>
+              <TableCell className={styles.tableCell}>Name</TableCell>
+              <TableCell className={styles.tableCell}>Email</TableCell>
+              <TableCell className={styles.tableCell}>Team</TableCell>
+              <TableCell className={styles.tableCell}>Department</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -114,12 +115,19 @@ const EmployeeTable = ({
               </TableRow>
             ) : (
               employees.map((employee) => (
-                <TableRow key={employee.id}>
-                  <TableCell>{`${employee.firstName} ${employee.lastName}`}</TableCell>
-                  <TableCell>{employee.email}</TableCell>
-                  <TableCell>
+                <TableRow key={employee.id} className={styles.tableRow}>
+                  <TableCell
+                    className={styles.tableCell}
+                  >{`${employee.firstName} ${employee.lastName}`}</TableCell>
+                  <TableCell className={styles.tableCell}>
+                    {employee.email}
+                  </TableCell>
+                  <TableCell className={styles.tableCell}>
                     <FormControl fullWidth>
-                      <InputLabel id={`team-label-${employee.id}`}>
+                      <InputLabel
+                        id={`team-label-${employee.id}`}
+                        className={styles.inputLabel}
+                      >
                         Team
                       </InputLabel>
                       <Select
@@ -129,6 +137,7 @@ const EmployeeTable = ({
                         onChange={(e) =>
                           handleTeamUpdate(employee.id, e.target.value)
                         }
+                        className={styles.select}
                       >
                         {teams.map((team) => (
                           <MenuItem key={team.id} value={team.id}>
@@ -138,9 +147,12 @@ const EmployeeTable = ({
                       </Select>
                     </FormControl>
                   </TableCell>
-                  <TableCell>
-                    <FormControl fullWidth>
-                      <InputLabel id={`department-label-${employee.id}`}>
+                  <TableCell className={styles.tableCell}>
+                    <FormControl fullWidth className={styles.selectRoot}>
+                      <InputLabel
+                        id={`department-label-${employee.id}`}
+                        className={styles.inputLabel}
+                      >
                         Department
                       </InputLabel>
                       <Select
@@ -152,11 +164,18 @@ const EmployeeTable = ({
                         onChange={(e) =>
                           handleDepartmentUpdate(employee.id, e.target.value)
                         }
+                        className={styles.select}
+                        MenuProps={{
+                          PaperProps: {
+                            className: styles.selectMenu,
+                          },
+                        }}
                       >
                         {departments.map((department) => (
                           <MenuItem
                             key={department.id}
                             value={department.id ? department.id : ""}
+                            className={styles.selectOption}
                           >
                             {department.name}
                           </MenuItem>
@@ -177,6 +196,7 @@ const EmployeeTable = ({
         onPageChange={handleChangePage}
         rowsPerPage={rowsPerPage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+        classes={{ root: styles.pagination }} // Custom class for pagination
       />
     </div>
   );

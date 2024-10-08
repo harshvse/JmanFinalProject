@@ -10,6 +10,7 @@ import UserDashboard from "../components/UserDashboard";
 
 const Home = () => {
   const homeLinks = [
+    { to: "/", label: "Dashboard" },
     { to: "/course", label: "View All Courses" },
     { to: "/quiz", label: "Quizzes" },
     { to: "/discussion", label: "Discussions" },
