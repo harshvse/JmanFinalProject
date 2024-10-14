@@ -1,0 +1,41 @@
+id,courseId,title,createdAt
+84,151,Quiz 1: Supervised Learning,2024-10-09 06:04:28.481
+85,151,Quiz 2: Unsupervised Learning,2024-10-09 06:04:28.522
+86,145,Quiz 1: Neural Networks,2024-10-09 06:04:28.562
+87,145,Quiz 2: HTML and CSS,2024-10-09 06:04:28.591
+88,144,Quiz 1: Unsupervised Learning,2024-10-09 06:04:28.619
+89,144,Quiz 2: Control Structures,2024-10-09 06:04:28.650
+90,146,Quiz 1: Object-Oriented Programming,2024-10-09 06:04:28.674
+91,146,Quiz 2: Network Protocols,2024-10-09 06:04:28.700
+92,155,Quiz 1: Object-Oriented Programming,2024-10-09 06:04:28.728
+93,155,Quiz 2: Memory Management,2024-10-09 06:04:28.771
+94,158,Quiz 1: Design Patterns,2024-10-09 06:04:28.800
+95,158,Quiz 2: Variables and Data Types,2024-10-09 06:04:28.843
+96,149,Quiz 1: JavaScript Basics,2024-10-09 06:04:28.870
+97,149,Quiz 2: Neural Networks,2024-10-09 06:04:28.905
+98,162,Quiz 1: Neural Networks,2024-10-09 06:04:28.934
+99,162,Quiz 2: Encryption Techniques,2024-10-09 06:04:28.961
+100,161,Quiz 1: Software Development Life Cycle,2024-10-09 06:04:28.990
+101,161,Quiz 2: Supervised Learning,2024-10-09 06:04:29.023
+102,154,Quiz 1: Variables and Data Types,2024-10-09 06:04:29.058
+103,154,Quiz 2: Authentication Methods,2024-10-09 06:04:29.097
+104,152,Quiz 1: Network Protocols,2024-10-09 06:04:29.127
+105,152,Quiz 2: Memory Management,2024-10-09 06:04:29.156
+106,157,Quiz 1: Unsupervised Learning,2024-10-09 06:04:29.182
+107,157,Quiz 2: Memory Management,2024-10-09 06:04:29.213
+108,150,Quiz 1: Encryption Techniques,2024-10-09 06:04:29.238
+109,150,Quiz 2: Memory Management,2024-10-09 06:04:29.276
+110,148,Quiz 1: Unsupervised Learning,2024-10-09 06:04:29.311
+111,148,Quiz 2: Encryption Techniques,2024-10-09 06:04:29.346
+112,160,Quiz 1: Unsupervised Learning,2024-10-09 06:04:29.371
+113,160,Quiz 2: Functions and Methods,2024-10-09 06:04:29.399
+114,147,Quiz 1: Object-Oriented Programming,2024-10-09 06:04:29.434
+115,147,Quiz 2: Functions and Methods,2024-10-09 06:04:29.493
+116,143,Quiz 1: Memory Management,2024-10-09 06:04:29.539
+117,143,Quiz 2: Design Patterns,2024-10-09 06:04:29.578
+118,153,Quiz 1: Software Development Life Cycle,2024-10-09 06:04:29.612
+119,153,Quiz 2: Control Structures,2024-10-09 06:04:29.700
+120,159,Quiz 1: Object-Oriented Programming,2024-10-09 06:04:29.777
+121,159,Quiz 2: Memory Management,2024-10-09 06:04:29.831
+122,156,Quiz 1: Process Management,2024-10-09 06:04:29.909
+123,156,Quiz 2: Functions and Methods,2024-10-09 06:04:30.043
